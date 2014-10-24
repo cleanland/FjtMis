@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cleanland.www.fjtmis" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name="com.cleanland.www.fjtmis.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/fjtmis"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name="com.cleanland.www.fjtmis.Act_BlogDetail" />
+        <activity
+            android:name="com.cleanland.www.fjtmis.Login"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.cleanland.www.fjtmis.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+
+        <activity
+            android:name="com.cleanland.www.fjtmis.Act_CustDetail01"
+            android:label="@string/title_activity_act__cust_detail01" >
+        </activity>
+
+        <service android:name="com.cleanland.www.fjtmis.DaemonService">
+            <intent-filter>
+                <action android:name="com.cleanland.www.fjtmis.xxxxxxxxxx" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
