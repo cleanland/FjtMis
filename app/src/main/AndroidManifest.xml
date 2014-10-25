@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cleanland.www.fjtmis" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -20,22 +21,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.cleanland.www.fjtmis.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
-
         <activity
             android:name="com.cleanland.www.fjtmis.Act_CustDetail01"
             android:label="@string/title_activity_act__cust_detail01" >
         </activity>
 
-        <service android:name="com.cleanland.www.fjtmis.DaemonService">
+        <service android:name="com.cleanland.www.fjtmis.DaemonService" >
             <intent-filter>
                 <action android:name="com.cleanland.www.fjtmis.xxxxxxxxxx" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name="com.cleanland.www.fjtmis.AddCustActivity"
+            android:label="@string/title_activity_add_cust" >
+        </activity>
     </application>
 
 </manifest>

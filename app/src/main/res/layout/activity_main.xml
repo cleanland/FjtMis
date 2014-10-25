@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1"
-        android:background="@android:color/darker_gray">
+        android:background="#ff2b2b2b">
 
         <ImageButton
             android:layout_width="54dp"

@@ -3,7 +3,10 @@
     tools:context="com.example.administrator.kui.MainActivity">
     <item android:id="@+id/action_addblog" android:title="@string/add_blog"
         android:orderInCategory="100" android:showAsAction="never" />
-     
+
+    <item android:id="@+id/action_addCust" android:title="@string/add_Cust"
+        android:orderInCategory="100" android:showAsAction="never" />
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" android:showAsAction="never" />
 

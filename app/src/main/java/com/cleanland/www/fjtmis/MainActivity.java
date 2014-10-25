@@ -143,6 +143,10 @@ public class MainActivity extends SwipeBackActivity {
 
             return true;
         }
+        if (id[0] == R.id.action_addCust) {
+             startActivity(new Intent(MainActivity.this,AddCustActivity.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
