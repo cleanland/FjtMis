@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -62,7 +63,6 @@ public class MainActivity extends SwipeBackActivity {
         ((ImageButton)findViewById(R.id.imagebutton1)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("","");//
                 mViewPager.setCurrentItem(0);
             }
         });
@@ -70,8 +70,21 @@ public class MainActivity extends SwipeBackActivity {
         ((ImageButton)findViewById(R.id.imageButton2)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("","");//
                 mViewPager.setCurrentItem(1);
+            }
+        });
+
+        ((ImageButton)findViewById(R.id.imageButton3)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"尚未实现",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ((ImageButton)findViewById(R.id.imageButton4)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
