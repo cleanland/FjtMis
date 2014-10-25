@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -103,7 +104,7 @@ public class Act_BlogDetail extends SwipeBackActivity {
                     if (jsobj.getString("AllowEdit").equals("True")) {
                         LinearLayout editArea = new LinearLayout(ctx);
                         editArea.setOrientation(LinearLayout.HORIZONTAL);
-                        final EditText newblog = new EditText(Act_BlogDetail.this);
+                        final EditText newblog = new EditText(ctx);
                         newblog.setHint("点击追加日志内容");
                         newblog.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
                         editArea.addView(newblog);

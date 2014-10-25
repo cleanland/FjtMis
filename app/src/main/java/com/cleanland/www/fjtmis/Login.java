@@ -1,6 +1,5 @@
 package com.cleanland.www.fjtmis;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,6 +39,20 @@ public class Login extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //代码测试区
+        if (false)
+        {
+            new MyHttpJob("http://www.baidu.com",new LinkedList<BasicNameValuePair>()){
+
+                @Override
+                protected void OnDone(String ResponsedStr) {
+                    ((EditText)findViewById(R.id.siteUrl)).setText(ResponsedStr);
+                }
+            };
+
+            Log.i("","");
+            return;
+        }
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
