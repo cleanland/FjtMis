@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MyActivity"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clickable="false" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -19,25 +20,37 @@
         android:weightSum="1">
 
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="38dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:text="日志"
-            android:id="@+id/button"
-            android:src="@drawable/fjtmis"
-            android:scaleType="centerCrop" />
+            android:id="@+id/imagebutton1"
+            android:layout_weight=".25"
+            android:src="@android:drawable/sym_action_chat" />
 
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="38dp"
-            android:text="日志"
-            android:id="@+id/imageButton"
-            android:src="@drawable/fjtmis"
-            android:scaleType="centerCrop"  />
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:text="意向客户"
+            android:id="@+id/imageButton2"
+            android:layout_weight=".25"
+            android:src="@android:drawable/ic_input_get" />
 
-        <SearchView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchView" />
+        <ImageButton
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:text="无"
+            android:id="@+id/imageButton3"
+            android:layout_weight=".25"
+            android:src="@drawable/me"
+            android:scaleType="centerInside" />
 
+        <ImageButton
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:text="无"
+            android:id="@+id/imageButton4"
+            android:layout_weight=".25"
+            android:src="@drawable/home"
+            android:scaleType="centerInside" />
     </LinearLayout>
 </LinearLayout>

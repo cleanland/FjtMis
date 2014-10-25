@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -57,6 +58,22 @@ public class MainActivity extends SwipeBackActivity {
         //【layout.ViewPager】=【碎片页控制器】=【碎片管理者】
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        ((ImageButton)findViewById(R.id.imagebutton1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("","");//
+                mViewPager.setCurrentItem(0);
+            }
+        });
+
+        ((ImageButton)findViewById(R.id.imageButton2)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("","");//
+                mViewPager.setCurrentItem(1);
+            }
+        });
     }
 
 
