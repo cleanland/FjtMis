@@ -37,7 +37,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("客户详细资料");
+        setTitle("意向客户详细资料");
         final Act_CustDetail01 ctx = Act_CustDetail01.this;
         setTheme(android.R.style.Theme_Holo_Light_DarkActionBar);
         setContentView(R.layout.custdetail_followlist);
