@@ -1,8 +1,6 @@
 package com.cleanland.www.fjtmis;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -41,7 +39,7 @@ public class Login extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //代码测试区
-        
+
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
@@ -147,96 +145,6 @@ public class Login extends SwipeBackActivity {
             //region TEST AREA
             if (false) {
 
-                //get loyout by findViewById:★★★★★★★★★★★★★★★★★★★★★★
-                LinearLayout layout = (LinearLayout) findViewById(R.id.rootLayout);
-
-                TextView tv = new TextView(this);
-                tv.setBackgroundColor(Color.RED);
-                tv.setText("23232323");
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(Login.this, "", Toast.LENGTH_LONG).show();
-                    }
-                });
-                layout.addView(tv);
-                Button bt = new Button(this);
-                tv.setBackgroundColor(Color.RED);
-                tv.setText("23232323");
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(Login.this, "", Toast.LENGTH_LONG).show();
-                    }
-                });
-                layout.addView(bt);
-
-                ListView lv = new ListView(Login.this);
-                lv.setAdapter(new ListAdapter() {
-                    @Override
-                    public boolean areAllItemsEnabled() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isEnabled(int position) {
-                        return false;
-                    }
-
-                    @Override
-                    public void registerDataSetObserver(DataSetObserver observer) {
-
-                    }
-
-                    @Override
-                    public void unregisterDataSetObserver(DataSetObserver observer) {
-
-                    }
-
-                    @Override
-                    public int getCount() {
-                        return 100;
-                    }
-
-                    @Override
-                    public Object getItem(int position) {
-                        return null;
-                    }
-
-                    @Override
-                    public long getItemId(int position) {
-                        return position;
-                    }
-
-                    @Override
-                    public boolean hasStableIds() {
-                        return false;
-                    }
-
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        TextView xtv = new TextView(Login.this);
-                        xtv.setText("adfasdfasdfasdfqwerqwer");
-                        xtv.setBackgroundColor(Color.GREEN);
-                        return xtv;
-                    }
-
-                    @Override
-                    public int getItemViewType(int position) {
-                        return 0;
-                    }
-
-                    @Override
-                    public int getViewTypeCount() {
-                        return 1;
-                    }
-
-                    @Override
-                    public boolean isEmpty() {
-                        return false;
-                    }
-                });
-                layout.addView(lv);
                 return;
             }
 
