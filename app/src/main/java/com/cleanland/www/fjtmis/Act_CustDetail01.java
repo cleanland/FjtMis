@@ -161,6 +161,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                 viewHolder.description = (TextView) convertView.findViewById(R.id.textView);
                                 viewHolder.description.setTextColor(Color.parseColor("#987654"));
                                 viewHolder.description.setBackgroundColor(Color.parseColor("#123456"));
+                                viewHolder.description.setPadding(20,20,20,20);
 
                                 try {
                                     final JSONObject obj = listjson[0].getJSONObject(position);
@@ -215,7 +216,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                     super.onPostExecute(result);
 
                                     //RELOAD PAGE:
-                                    Toast.makeText(Act_CustDetail01.this, "" + result, Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(Act_CustDetail01.this, "" + result, Toast.LENGTH_LONG).show();
                                     startActivity(thisIntent);
                                     finish();
                                 }
@@ -227,7 +228,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                         LinkedList params = new LinkedList<BasicNameValuePair>();
                                         Form f = new Form();
                                         f.PreCustID = "" + Act_CustDetail01.this.getIntent().getExtras().getInt("id");
-                                        EditText memo = (EditText) findViewById(R.id.Memo);
+                                        EditText memo = (EditText) findViewById(R.id.newFollow);
                                         f.Memo = memo.getText().toString();
                                         params.add(new BasicNameValuePair("json", "" + new Gson().toJson(f)));
                                         return CwyWebJSON.postToUrl(((MyApplication) getApplication()).getSiteUrl() + "/PreCust/AddFollow", params);
