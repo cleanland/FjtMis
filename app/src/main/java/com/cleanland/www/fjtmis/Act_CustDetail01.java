@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,10 +39,11 @@ public class Act_CustDetail01 extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setTitle("客户详细资料");
         final Act_CustDetail01 ctx = Act_CustDetail01.this;
-        final LinearLayout layout = new LinearLayout(ctx);
+        setTheme(android.R.style.Theme_Holo_Light_DarkActionBar);
+        setContentView(R.layout.custdetail_followlist);
+
         final Intent thisIntent = getIntent();
 
-        // setContentView(R.layout.activity_act__cust_detail01);
         new AsyncTask<Void, Void, String>() {
             @Override
             protected void onPostExecute(String result) {
@@ -50,21 +51,23 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                 super.onPostExecute(result);
                 // TODO bind data to the list of this page:
                 JSONObject jsobj = null;
+                /*
+                * {"page":1,"total":1,"rows":[{"ID":30,"CityName":"","ComAddress":"nn","ComName":"nnn","ComSpell":"nnn","CustName":"nn","Phone":"","CreateTime":"2014-10-26 09:48:53","LastFollowTime":"2014-10-26 09:48:53","FlagDeleted":false,"Memo":"","EmpCount":999,"EmpID_DisplayText":"管理员22233","EmpID":2}]}
+                * */
                 try {
-                    jsobj = new JSONArray(result).getJSONObject(0);
-                    layout.setOrientation(LinearLayout.VERTICAL);
-                    TextView title = new TextView(ctx);
-                    title.setPadding(10, 10, 10, 10);
-                    title.setBackgroundColor(Color.GRAY);
-                    title.setText(jsobj.getString("Name") + "@" + jsobj.getString("WebSiteID_DisplayText") + "." + jsobj.getString("CreateTime"));
-                    layout.addView(title);
+                    jsobj = new JSONObject(result).getJSONArray("rows").getJSONObject(0);
+                    TextView title = (TextView) findViewById(R.id.Title);
+                    title.setText(
+                            "基本信息："+jsobj.getString("CityName") + "." + jsobj.getString("ComName") + "." + jsobj.getString("CustName") +
+                                    "\n手机号码：" + jsobj.getString("Phone") +
+                                    "\n员工人数：" + jsobj.getString("EmpCount") +
+                                    "\r\nBy:" + jsobj.getString("EmpID_DisplayText") + " @" + jsobj.getString("CreateTime"));
 
-                    TextView c = new TextView(ctx);
-                    c.setPadding(10, 10, 10, 10);
-                    c.setText(jsobj.getString("Memo"));
-                    layout.addView(c);
+                    TextView c = (TextView) findViewById(R.id.Memo);
+                    String memo=jsobj.getString("Memo");
+                    if(memo.isEmpty())memo="<无>";
+                    c.setText("备注："+memo);
 
-                    ctx.setContentView(layout);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -98,7 +101,8 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                     final Activity ctx = Act_CustDetail01.this;
                     jsobj = new JSONObject(result);
                     final JSONArray[] listjson = {jsobj.getJSONArray("rows")};//★★★★★★★★
-                    final ListView lv = new ListView(ctx);
+                    ListView lv = (ListView) findViewById(R.id.FollowList);
+                    lv.setBackgroundColor(Color.BLACK);//.parseColor("#555555"));
                     lv.setDividerHeight(2);
 
                     final LayoutInflater inflater = LayoutInflater.from(ctx);
@@ -155,18 +159,18 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                 viewHolder = new ViewHolder();
                                 convertView = inflater.inflate(R.layout.listitem_min, parent, false);
                                 viewHolder.description = (TextView) convertView.findViewById(R.id.textView);
+                                viewHolder.description.setTextColor(Color.parseColor("#987654"));
+                                viewHolder.description.setBackgroundColor(Color.parseColor("#123456"));
+
                                 try {
                                     final JSONObject obj = listjson[0].getJSONObject(position);
                                     String man = "出错了！";
                                     if (obj.has("EmpID_DisplayText")) {
-
                                         man = obj.getString("EmpID_DisplayText");
                                     }
 
-                                    viewHolder.description.setBackgroundColor(Color.YELLOW);
-                                    viewHolder.description.setTextColor(Color.RED);
                                     viewHolder.description.setText(obj.getString("Memo") + //跟进内容
-                                            " By " + man + "@" + //by whom @ when
+                                            " \r\nBy " + man + "@" + //by whom @ when
                                             obj.getString("CreateTime") + ".");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -195,18 +199,11 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                         }
                     });
 
-                    layout.addView(lv);
-
-
-                    final EditText memo = new EditText(ctx);
-                    //android:background="@drawable/backwithborder"
-                    memo.setBackground(null);
+                    EditText memo = (EditText) findViewById(R.id.newFollow);
 
                     memo.setHint("点击添加跟进内容");
-                    memo.setMinLines(3);
 
-
-                    final Button b = new Button(ctx);
+                    Button b = (Button) findViewById(R.id.OK);
                     b.setText("OK！");
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -230,6 +227,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                         LinkedList params = new LinkedList<BasicNameValuePair>();
                                         Form f = new Form();
                                         f.PreCustID = "" + Act_CustDetail01.this.getIntent().getExtras().getInt("id");
+                                        EditText memo = (EditText) findViewById(R.id.Memo);
                                         f.Memo = memo.getText().toString();
                                         params.add(new BasicNameValuePair("json", "" + new Gson().toJson(f)));
                                         return CwyWebJSON.postToUrl(((MyApplication) getApplication()).getSiteUrl() + "/PreCust/AddFollow", params);
@@ -244,10 +242,6 @@ public class Act_CustDetail01 extends SwipeBackActivity {
 
                         }
                     });
-
-
-                    layout.addView(memo);
-                    layout.addView(b);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -303,6 +297,5 @@ public class Act_CustDetail01 extends SwipeBackActivity {
     private static class Form {
         String Memo;
         String PreCustID;
-        String ID = "";
     }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    tools:context=".Act_CustDetail01"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Title"
+        android:textSize="16dp"
+        android:text="01234567"
+        android:textColor="#ff4457a1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Memo" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/FollowList"
+        android:layout_weight="1" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="111dp"
+        android:id="@+id/newFollow"
+        android:inputType="text|textMultiLine" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK!"
+        android:id="@+id/OK"
+        android:layout_gravity="center_horizontal"
+        android:focusable="false" />
+
+
+</LinearLayout>
+
