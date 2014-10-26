@@ -1,11 +1,8 @@
 package com.cleanland.www.fjtmis;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,16 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
@@ -41,8 +37,20 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * 利用VIEWPAGER，组织FJTMIS的多个页面。导航条。底部。
  */
 public class MainActivity extends SwipeBackActivity {
+    private static final int ADD_CUST_OK = 55456;
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    private List<String> tagList=new ArrayList<String>();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_CUST_OK) {
+            if (false) Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+            // TODO .....
+            mSectionsPagerAdapter.update(1);
+            mViewPager.setCurrentItem(1);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,28 +68,28 @@ public class MainActivity extends SwipeBackActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        ((ImageButton)findViewById(R.id.imagebutton1)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) findViewById(R.id.imagebutton1)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(0);
             }
         });
 
-        ((ImageButton)findViewById(R.id.imageButton2)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) findViewById(R.id.imageButton2)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mViewPager.setCurrentItem(1);
             }
         });
 
-        ((ImageButton)findViewById(R.id.imageButton3)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) findViewById(R.id.imageButton3)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"尚未实现",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "尚未实现", Toast.LENGTH_SHORT).show();
             }
         });
 
-        ((ImageButton)findViewById(R.id.imageButton4)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) findViewById(R.id.imageButton4)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -122,7 +130,7 @@ public class MainActivity extends SwipeBackActivity {
                         e.printStackTrace();
                     }
                     if (tid == 0) return;
-                    Log.i("tid--------------------------------", ""+tid);
+                    Log.i("tid--------------------------------", "" + tid);
 
                     Intent newIntent = new Intent(MainActivity.this, Act_BlogDetail.class);
                     newIntent.putExtra("id", tid);
@@ -144,7 +152,7 @@ public class MainActivity extends SwipeBackActivity {
             return true;
         }
         if (id[0] == R.id.action_addCust) {
-             startActivity(new Intent(MainActivity.this,AddCustActivity.class));
+            startActivityForResult(new Intent(MainActivity.this, AddCustActivity.class), ADD_CUST_OK);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -192,6 +200,16 @@ public class MainActivity extends SwipeBackActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private String makeFragmentName(long viewId, long index) {
+            return "android:switcher:" + viewId + ":" + index;
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            tagList.add(makeFragmentName(container.getId(), getItemId(position)));
+            return super.instantiateItem(container, position);
+        }
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -234,6 +252,26 @@ public class MainActivity extends SwipeBackActivity {
                     return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
+        }
+
+        public void update(int item) {
+            FragmentManager fm = getFragmentManager();
+            Fragment fragment = fm.findFragmentByTag(tagList.get(item));
+            if (fragment != null) {
+                switch (item) {
+                    case 0:
+                        ((Fra_BlogList) fragment).update();
+                        break;
+                    case 1:
+                        ((Fra_CustList) fragment).update();
+                        break;
+                    case 2:
+                        ((fra) fragment).update();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 

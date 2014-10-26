@@ -172,6 +172,10 @@ public class Fra_BlogList extends Fragment {
         return rootview;
     }
 
+    public void update() {
+
+    }
+
     private static class ViewHolder {
         TextView description;
     }

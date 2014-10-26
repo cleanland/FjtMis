@@ -74,7 +74,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
             protected String doInBackground(Void... arg0) {
                 try {
                     LinkedList params = new LinkedList<BasicNameValuePair>();
-                    URL url = new URL(((MyApplication) getApplication()).getSiteUrl() + "/CustomerManage/GetCompany?id=" +
+                    URL url = new URL(((MyApplication) getApplication()).getSiteUrl() + "/PreCust/GetMyPreCust?id=" +
                             Act_CustDetail01.this.getIntent().getExtras().getInt("id"));
 
                     return CwyWebJSON.postToUrl(url.toString(), params);
@@ -228,13 +228,11 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                 protected String doInBackground(Void... arg0) {
                                     try {
                                         LinkedList params = new LinkedList<BasicNameValuePair>();
-                                        //Memo:"747474",ID:"",CompanyID:"6"}
-                                        //http://192.168.1.58:8007/CustomerManage/AddFollow
                                         Form f = new Form();
-                                        f.CompanyID = "" + Act_CustDetail01.this.getIntent().getExtras().getInt("id");
+                                        f.PreCustID = "" + Act_CustDetail01.this.getIntent().getExtras().getInt("id");
                                         f.Memo = memo.getText().toString();
                                         params.add(new BasicNameValuePair("json", "" + new Gson().toJson(f)));
-                                        return CwyWebJSON.postToUrl(((MyApplication) getApplication()).getSiteUrl() + "/CustomerManage/AddFollow", params);
+                                        return CwyWebJSON.postToUrl(((MyApplication) getApplication()).getSiteUrl() + "/PreCust/AddFollow", params);
                                     } catch (Exception e) {
                                         //Toast.makeText(Login.this,"晕，是不是网址不对啊？",Toast.LENGTH_LONG).show();
                                         //上句好像加上也不起作用，不知道为啥。。。
@@ -266,7 +264,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                     params.add(new BasicNameValuePair("query", "{pid:\"" + Act_CustDetail01.this.getIntent().getExtras().getInt("id") + "\"}"));
                     params.add(new BasicNameValuePair("qtype", "sql"));
                     params.add(new BasicNameValuePair("iegohell", "1413782533798"));
-                    URL url = new URL(((MyApplication) getApplication()).getSiteUrl() + "/CustomerManage/CompanyFollow_GetList");
+                    URL url = new URL(((MyApplication) getApplication()).getSiteUrl() + "/PreCust/Follow_GetList");
                     return CwyWebJSON.postToUrl(url.toString(), params);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -304,7 +302,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
 
     private static class Form {
         String Memo;
-        String CompanyID;
+        String PreCustID;
         String ID = "";
     }
 }

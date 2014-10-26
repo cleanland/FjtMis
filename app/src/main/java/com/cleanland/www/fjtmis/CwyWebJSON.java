@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
@@ -98,7 +99,11 @@ public class CwyWebJSON {
 
             HttpPost postMethod = new HttpPost(url);
             postMethod.setEntity(new UrlEncodedFormEntity(params, "utf-8")); // 将参数填入POST
-            Log.i("正在向URL POST数据:", "URL = "+url);
+            Log.i("正在向URL POST数据:", "URL = " + url);
+
+            client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000);
+            client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 10000);
+
             HttpResponse response = client.execute(postMethod); // 执行POST方法
             result = EntityUtils.toString(response.getEntity(), "utf-8");
             Log.i("POST 状态:", "状态代码 = "

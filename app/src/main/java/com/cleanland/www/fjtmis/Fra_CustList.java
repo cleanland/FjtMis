@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -32,8 +33,8 @@ import java.util.LinkedList;
  * 显示客户列表
  */
 public class Fra_CustList extends Fragment {
+    ListView lv;
     JSONArray listjson;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //get layout by inflat...★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -53,7 +54,7 @@ public class Fra_CustList extends Fragment {
                     final Activity ctx = getActivity();
                     jsobj = new JSONObject(result);
                     listjson = jsobj.getJSONArray("rows");//★★★★★★★★
-                    final ListView lv = (ListView) rootview.findViewById(R.id.listView);
+                    lv = (ListView) rootview.findViewById(R.id.listView);
                     lv.setDividerHeight(2);
 
                     final LayoutInflater inflater = LayoutInflater.from(ctx);
@@ -124,9 +125,9 @@ public class Fra_CustList extends Fragment {
                                     man = obj.getString("EmpID_DisplayText");
                                 }
                                 viewHolder.description.setBackgroundColor(Color.parseColor("#FFE7FFC2"));
-                                viewHolder.description.setText(obj.getString("Name") + //公司
+                                viewHolder.description.setText(obj.getString("ComName") + //公司
                                         " By " + man + "@" + //by whom @ which siteUrl
-                                        obj.getString("WebSiteID_DisplayText") + ".");
+                                        obj.getString("ComAddress") + ".");
 
                                 viewHolder.description.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -183,9 +184,6 @@ public class Fra_CustList extends Fragment {
                         int count = lv.getCount();
                         if (scrollState == SCROLL_STATE_IDLE) {
                             if (lv.getLastVisiblePosition() >= count - threshold) {
-
-
-
                                 // Execute LoadMoreDataTask AsyncTask
                                 new AsyncTask<Void, Void, String>() {
                                     @Override
@@ -199,7 +197,7 @@ public class Fra_CustList extends Fragment {
                                             params.add(new BasicNameValuePair("query", "{Date1:\"\",sCon1:\"\"}"));
                                             params.add(new BasicNameValuePair("qtype", "sql"));
                                             params.add(new BasicNameValuePair("iegohell", "1413782533798"));
-                                            URL url = new URL(((MyApplication) getActivity().getApplication()).getSiteUrl() + "/CustomerManage/GetCompanyList");
+                                            URL url = new URL(((MyApplication) getActivity().getApplication()).getSiteUrl() + "/precust/GetMyPreCust?id=0");
                                             return CwyWebJSON.postToUrl(url.toString(), params);
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -221,7 +219,6 @@ public class Fra_CustList extends Fragment {
                                             if (!news.isEmpty())
                                                 newResult += "," + news.substring(1);
                                             listjson = new JSONArray(newResult);//★★★★★★★★
-
 
                                             //回归正路：
                                             lv.setSelectionFromTop(lv.getFirstVisiblePosition(), 0);
@@ -255,7 +252,7 @@ public class Fra_CustList extends Fragment {
                     params.add(new BasicNameValuePair("query", "{Date1:\"\",sCon1:\"\"}"));
                     params.add(new BasicNameValuePair("qtype", "sql"));
                     params.add(new BasicNameValuePair("iegohell", "1413782533798"));
-                    URL url = new URL(((MyApplication) getActivity().getApplication()).getSiteUrl() + "/CustomerManage/GetCompanyList");
+                    URL url = new URL(((MyApplication) getActivity().getApplication()).getSiteUrl() + "/precust/GetMyPreCust?id=0");
                     return CwyWebJSON.postToUrl(url.toString(), params);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -263,7 +260,6 @@ public class Fra_CustList extends Fragment {
                 return "";
             }
         }.execute();
-
         return rootview;
     }
 
@@ -273,6 +269,48 @@ public class Fra_CustList extends Fragment {
         dialog.setMessage(info);
         dialog.setPositiveButton("确定", null);
         dialog.show();
+    }
+
+    public void update() {
+        //重新绑定数据。。。。
+        new AsyncTask<Void, Void, String>() {
+            public int pageno = 1;
+            @Override
+            protected void onPostExecute(String result) {
+                // TODO Auto-generated method stub
+                super.onPostExecute(result);
+
+                // TODO bind data to the list of this page:
+                JSONObject jsobj = null;
+                try {
+                    jsobj = new JSONObject(result);
+                    listjson = jsobj.getJSONArray("rows");//★★★★★★★★
+
+                    //回归正路：
+                    lv.setSelectionFromTop(lv.getFirstVisiblePosition(), 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            protected String doInBackground(Void... arg0) {
+                try {
+                    LinkedList params = new LinkedList<BasicNameValuePair>();
+                    params.add(new BasicNameValuePair("page", "" + (pageno++)));
+                    params.add(new BasicNameValuePair("rp", "20"));
+                    params.add(new BasicNameValuePair("sortname", "ID"));
+                    params.add(new BasicNameValuePair("sortorder", "desc"));
+                    params.add(new BasicNameValuePair("query", "{Date1:\"\",sCon1:\"\"}"));
+                    params.add(new BasicNameValuePair("qtype", "sql"));
+                    params.add(new BasicNameValuePair("iegohell", "1413782533798"));
+                    URL url = new URL(((MyApplication) getActivity().getApplication()).getSiteUrl() + "/precust/GetMyPreCust?id=0");
+                    return CwyWebJSON.postToUrl(url.toString(), params);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return "";
+            }
+        }.execute();
     }
 
     private static class ViewHolder {

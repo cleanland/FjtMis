@@ -46,7 +46,8 @@ public class AddCustActivity extends SwipeBackActivity {
                 new MyHttpJob(((MyApplication)getApplication()).getSiteUrl()+ "/PreCust/EditPreCusts?id=0", params) {
                     @Override
                     protected void OnDone(String ResponsedStr) {
-                        if(true)Log.i("", ""+ResponsedStr);
+                        if(false)Log.i("", ""+ResponsedStr);
+                        finish();
                     }
                 };
             }

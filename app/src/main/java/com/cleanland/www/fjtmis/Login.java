@@ -101,7 +101,7 @@ public class Login extends SwipeBackActivity {
                             startActivity(new Intent(Login.this, MainActivity.class));
                         } else {
                             if (result.isEmpty()) result = "无法正确连接到服务器。";//999
-                            Toast.makeText(Login.this, "" + result, Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this, "" + result, Toast.LENGTH_SHORT).show();
                         }
                     }
 

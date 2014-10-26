@@ -105,4 +105,8 @@ public class fra extends Fragment {
         }
         return rootview;
     }
+
+    public void update() {
+
+    }
 }
