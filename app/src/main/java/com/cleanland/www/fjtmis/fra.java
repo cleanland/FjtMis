@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 /**
  * Created by Administrator on 2014/10/20.
+ * 这是一个没什么用的空页面。位于主屏中第三分屏。占位先。
  */
 public class fra extends Fragment {
     @Override

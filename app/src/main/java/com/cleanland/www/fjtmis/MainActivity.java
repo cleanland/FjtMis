@@ -2,6 +2,8 @@ package com.cleanland.www.fjtmis;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -37,6 +39,10 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * 利用VIEWPAGER，组织FJTMIS的多个页面。导航条。底部。
  */
 public class MainActivity extends SwipeBackActivity {
+
+    private UpdateManager updateMan;
+    private ProgressDialog updateProgressDialog;
+
     private static final int ADD_CUST_OK = 55456;
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
@@ -46,7 +52,8 @@ public class MainActivity extends SwipeBackActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_CUST_OK) {
             if (false) Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
-            // TODO .....
+            //((Fra_CustList)mSectionsPagerAdapter.getItem(1)).update();
+            //以上这句会引起一点奇怪的问题。。。。估计是安卓还有点BUG。。。
             mSectionsPagerAdapter.update(1);
             mViewPager.setCurrentItem(1);
         }
@@ -57,6 +64,71 @@ public class MainActivity extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("房介通内部管理系统");
+
+        if (true) {
+            updateMan = new UpdateManager(this, new UpdateManager.UpdateCallback() {
+                public void downloadProgressChanged(int progress) {
+                    if (updateProgressDialog != null
+                            && updateProgressDialog.isShowing()) {
+                        updateProgressDialog.setProgress(progress);
+                    }
+
+                }
+
+                public void downloadCompleted(Boolean sucess, CharSequence errorMsg) {
+                    if (updateProgressDialog != null
+                            && updateProgressDialog.isShowing()) {
+                        updateProgressDialog.dismiss();
+                    }
+                    if (sucess) {
+                        updateMan.update();
+                    } else {
+                        DialogHelper.Confirm(MainActivity.this,
+                                "R.string.dialog_error_title",
+                                "R.string.dialog_downfailed_msg",
+                                "R.string.dialog_downfailed_btnnext",
+                                new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        updateMan.downloadPackage();
+                                    }
+                                }, "R.string.dialog_downfailed_btnnext", null);
+                    }
+                }
+
+                public void downloadCanceled() {
+                    // TODO Auto-generated method stub
+
+                }
+
+                public void checkUpdateCompleted(Boolean hasUpdate,
+                                                 CharSequence updateInfo) {
+                    if (hasUpdate) {
+                        DialogHelper.Confirm(MainActivity.this,
+                                "版本更新提示：",
+                                "发现新版本：".toString() + updateInfo,
+                                "立即升级",
+                                new DialogInterface.OnClickListener() {
+
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        updateProgressDialog = new ProgressDialog(MainActivity.this);
+                                        updateProgressDialog.setMessage("正在下载：");
+                                        updateProgressDialog.setIndeterminate(false);
+                                        updateProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                        updateProgressDialog.setMax(100);
+                                        updateProgressDialog.setProgress(0);
+                                        updateProgressDialog.show();
+                                        updateMan.downloadPackage();
+                                    }
+                                }, "暂不升级", null);
+                    }
+
+                }
+            });
+            updateMan.checkUpdate();
+        }
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

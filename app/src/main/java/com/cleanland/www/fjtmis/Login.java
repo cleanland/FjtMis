@@ -1,6 +1,8 @@
 package com.cleanland.www.fjtmis;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -38,21 +40,8 @@ public class Login extends SwipeBackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         //代码测试区
-        if (false)
-        {
-            new MyHttpJob("http://www.baidu.com",new LinkedList<BasicNameValuePair>()){
-
-                @Override
-                protected void OnDone(String ResponsedStr) {
-                    ((EditText)findViewById(R.id.siteUrl)).setText(ResponsedStr);
-                }
-            };
-
-            Log.i("","");
-            return;
-        }
+        
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
@@ -99,6 +88,7 @@ public class Login extends SwipeBackActivity {
                             //endregion
 
                             startActivity(new Intent(Login.this, MainActivity.class));
+
                         } else {
                             if (result.isEmpty()) result = "无法正确连接到服务器。";//999
                             Toast.makeText(Login.this, "" + result, Toast.LENGTH_SHORT).show();
