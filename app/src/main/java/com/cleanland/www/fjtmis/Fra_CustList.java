@@ -4,21 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -33,11 +28,17 @@ import java.util.LinkedList;
  * 显示客户列表
  */
 public class Fra_CustList extends Fragment {
+    LayoutInflater inflater;
     ListView lv;
     JSONArray listjson;
+    Activity act;
+    private BaseAdapter listAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //get layout by inflat...★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        this.inflater = inflater;
+        act= getActivity();
         final View rootview = inflater.inflate(R.layout.custlist, container, false);
         //异步加载数据。
         new AsyncTask<Void, Void, String>() {
@@ -51,34 +52,13 @@ public class Fra_CustList extends Fragment {
                 // TODO bind data to the list of this page:
                 JSONObject jsobj = null;
                 try {
-                    final Activity ctx = getActivity();
                     jsobj = new JSONObject(result);
                     listjson = jsobj.getJSONArray("rows");//★★★★★★★★
                     lv = (ListView) rootview.findViewById(R.id.listView);
                     lv.setDividerHeight(2);
 
-                    final LayoutInflater inflater = LayoutInflater.from(ctx);
-                    lv.setAdapter(new ListAdapter() {
-                        @Override
-                        public boolean areAllItemsEnabled() {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean isEnabled(int position) {
-                            return true;
-                        }
-
-                        @Override
-                        public void registerDataSetObserver(DataSetObserver observer) {
-
-                        }
-
-                        @Override
-                        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-                        }
-
+                    final LayoutInflater inflater = LayoutInflater.from(act);
+                    listAdapter = new BaseAdapter() {
                         @Override
                         public int getCount() {
                             return listjson.length();
@@ -97,11 +77,6 @@ public class Fra_CustList extends Fragment {
                         @Override
                         public long getItemId(int position) {
                             return position;
-                        }
-
-                        @Override
-                        public boolean hasStableIds() {
-                            return true;
                         }
 
                         @Override
@@ -135,7 +110,7 @@ public class Fra_CustList extends Fragment {
                                         try {
                                             JSONObject pos = listjson.getJSONObject(position);
                                             int id = pos.getInt("ID");
-                                            Intent newIntent = new Intent(ctx, Act_CustDetail01.class);
+                                            Intent newIntent = new Intent(act, Act_CustDetail01.class);
                                             newIntent.putExtra("id", id);
                                             startActivity(newIntent);
                                         } catch (JSONException e) {
@@ -149,22 +124,8 @@ public class Fra_CustList extends Fragment {
                             // set item values to the viewHolder:
                             return convertView;
                         }
-
-                        @Override
-                        public int getItemViewType(int position) {
-                            return 0;
-                        }
-
-                        @Override
-                        public int getViewTypeCount() {
-                            return 1;
-                        }
-
-                        @Override
-                        public boolean isEmpty() {
-                            return false;
-                        }
-                    });
+                    };
+                    lv.setAdapter(listAdapter);
 
                     //实现下拉加载更多的效果。
                     resetOnScrollListener(lv);
@@ -178,7 +139,7 @@ public class Fra_CustList extends Fragment {
             private void resetOnScrollListener(final ListView lv) {
                 lv.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
-                    public void onScrollStateChanged(AbsListView view,int scrollState) {
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
                         // TODO Auto-generated method stub
                         int threshold = 1;
                         int count = lv.getCount();
@@ -221,7 +182,7 @@ public class Fra_CustList extends Fragment {
                                             listjson = new JSONArray(newResult);//★★★★★★★★
 
                                             //回归正路：
-                                            lv.setSelectionFromTop(lv.getFirstVisiblePosition(), 0);
+                                            ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -275,6 +236,7 @@ public class Fra_CustList extends Fragment {
         //重新绑定数据。。。。
         new AsyncTask<Void, Void, String>() {
             public int pageno = 1;
+
             @Override
             protected void onPostExecute(String result) {
                 // TODO Auto-generated method stub
@@ -287,11 +249,12 @@ public class Fra_CustList extends Fragment {
                     listjson = jsobj.getJSONArray("rows");//★★★★★★★★
 
                     //回归正路：
-                    lv.setSelectionFromTop(lv.getFirstVisiblePosition(), 0);
+                    ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
             @Override
             protected String doInBackground(Void... arg0) {
                 try {

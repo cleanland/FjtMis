@@ -28,8 +28,7 @@ public class AddCustActivity extends SwipeBackActivity {
         ((Button) findViewById(R.id.button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddCustActivity.this, "", Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(AddCustActivity.this, "", Toast.LENGTH_SHORT).show();
                 LinkedList<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
 
                 //JS:select * from tableName,get ColumnNames Array.then run in chrome console window:★★★★★★
