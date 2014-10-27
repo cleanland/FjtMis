@@ -1,5 +1,6 @@
 package com.cleanland.www.fjtmis;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -29,8 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
-
 
 /**
  * 利用VIEWPAGER，组织FJTMIS的多个页面。导航条。底部。
@@ -40,15 +39,15 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
  * 利用VIEWPAGER，组织FJTMIS的多个页面。导航条。底部。
  * 利用VIEWPAGER，组织FJTMIS的多个页面。导航条。底部。
  */
-public class MainActivity extends SwipeBackActivity {
-
+public class MainActivity extends Activity {
     private UpdateManager updateMan;
     private ProgressDialog updateProgressDialog;
 
     private static final int ADD_CUST_OK = 55456;
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
-    private List<String> tagList=new ArrayList<String>();
+    private List<String> tagList = new ArrayList<String>();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
