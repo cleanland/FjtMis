@@ -99,7 +99,7 @@ public class CwyWebJSON {
 
             HttpPost postMethod = new HttpPost(url);
             postMethod.setEntity(new UrlEncodedFormEntity(params, "utf-8")); // 将参数填入POST
-            Log.i("正在向URL POST数据:", "URL = " + url);
+            Log.i("正在向URL POST数据:", "URL = " + url+".params:"+params);
 
             client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000);
             client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 10000);

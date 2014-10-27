@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -161,7 +159,7 @@ public class Act_CustDetail01 extends SwipeBackActivity {
                                 viewHolder.description = (TextView) convertView.findViewById(R.id.textView);
                                 viewHolder.description.setTextColor(Color.parseColor("#987654"));
                                 viewHolder.description.setBackgroundColor(Color.parseColor("#123456"));
-                                viewHolder.description.setPadding(20,20,20,20);
+                                viewHolder.description.setPadding(20, 20, 20, 20);
 
                                 try {
                                     final JSONObject obj = listjson[0].getJSONObject(position);

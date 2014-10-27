@@ -4,18 +4,20 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cleanland.www.fjtmis.CwyWebJSON;
 import com.cleanland.www.fjtmis.MyApplication;
 import com.cleanland.www.fjtmis.MyHttpJob;
 import com.cleanland.www.fjtmis.R;
-import com.cleanland.www.fjtmis.employee.Act_EmpDetail;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -31,20 +33,30 @@ import java.util.LinkedList;
 public class fra extends Fragment {
     private BaseAdapter emplistData;
     Activity act;
+    private String url;
+    private JSONArray listjson;
+    int pageno;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         act = getActivity();
+        pageno=1;
         final View rootview = inflater.inflate(R.layout.emplist, container, false);
-        String url = ((MyApplication) getActivity().getApplication()).getSiteUrl()+ "/Emp/GetEmpList";
+        url = ((MyApplication) getActivity().getApplication()).getSiteUrl() + "/Emp/GetEmpList";
         LinkedList<BasicNameValuePair> params = new LinkedList<BasicNameValuePair>();
-
+        params.add(new BasicNameValuePair("page", "" + (pageno++)));
+        params.add(new BasicNameValuePair("rp", "20"));
+        params.add(new BasicNameValuePair("sortname", "ID"));
+        params.add(new BasicNameValuePair("sortorder", "desc"));
+        params.add(new BasicNameValuePair("query", "{Status:1}"));
+        params.add(new BasicNameValuePair("qtype", "sql"));
+        params.add(new BasicNameValuePair("iegohell", "1413782533798"));
         new MyHttpJob(url, params) {
             @Override
             protected void OnDone(String ResponsedStr) {
                 try {
                     JSONObject jsobj = new JSONObject(ResponsedStr);
-                    final JSONArray listjson = jsobj.getJSONArray("rows");
+                    listjson = jsobj.getJSONArray("rows");
                     emplistData = new BaseAdapter() {
                         @Override
                         public int getCount() {
@@ -114,8 +126,73 @@ public class fra extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                ListView lv = (ListView) rootview.findViewById(R.id.listView2);
+                final ListView lv = (ListView) rootview.findViewById(R.id.listView2);
                 lv.setAdapter(emplistData);
+                lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                        // TODO Auto-generated method stub
+                        int threshold = 1;
+                        int count = lv.getCount();
+                        if (scrollState == SCROLL_STATE_IDLE) {
+                            if (lv.getLastVisiblePosition() >= count - threshold) {
+                                // Execute LoadMoreDataTask AsyncTask
+                                new AsyncTask<Void, Void, String>() {
+                                    @Override
+                                    protected String doInBackground(Void... arg0) {
+                                        try {
+                                            LinkedList params = new LinkedList<BasicNameValuePair>();
+                                            params.add(new BasicNameValuePair("page", "" + (pageno++)));
+                                            params.add(new BasicNameValuePair("rp", "20"));
+                                            params.add(new BasicNameValuePair("sortname", "ID"));
+                                            params.add(new BasicNameValuePair("sortorder", "desc"));
+                                            params.add(new BasicNameValuePair("query", "{Status:1}"));
+                                            params.add(new BasicNameValuePair("qtype", "sql"));
+                                            params.add(new BasicNameValuePair("iegohell", "1413782533798"));
+                                            return CwyWebJSON.postToUrl(url.toString(), params);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        return "";
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(String s) {
+                                        super.onPostExecute(s);
+                                        try {
+                                            //由于不想搞新MODEL，所以反复追加字符串吧。。。
+                                            String olds = listjson.toString();
+
+                                            JSONObject newdata = new JSONObject(s);
+                                            String news = newdata.getJSONArray("rows").toString();
+                                            if (news.equals("[]")) {
+                                                return;
+                                            }
+
+                                            String newResult = olds.substring(0, olds.length() - 1);
+                                            if (!news.isEmpty())
+                                                newResult += "," + news.substring(1);
+                                            listjson = new JSONArray(newResult);//★★★★★★★★
+
+                                            //回归正路：
+                                            ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }.execute();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem,
+                                         int visibleItemCount, int totalItemCount) {
+                        // TODO Auto-generated method stub
+
+                    }
+
+                });
             }
         };
 

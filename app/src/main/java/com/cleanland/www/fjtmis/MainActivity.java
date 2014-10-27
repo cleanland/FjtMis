@@ -64,8 +64,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setTitle("房介通内部管理系统");
+        setTitle("工作日志");
 
+        //版本检查。自动升级
         if (true) {
             updateMan = new UpdateManager(this, new UpdateManager.UpdateCallback() {
                 public void downloadProgressChanged(int progress) {
@@ -140,6 +141,35 @@ public class MainActivity extends Activity {
         //【layout.ViewPager】=【碎片页控制器】=【碎片管理者】
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                switch (i) {
+                    case 0: {
+                        setTitle("工作日志");
+                        break;
+                    }
+                    case 1: {
+                        setTitle("意向客户");
+                        break;
+                    }
+                    case 2: {
+                        setTitle("员工档案");
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         ((ImageButton) findViewById(R.id.imagebutton1)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +188,7 @@ public class MainActivity extends Activity {
         ((ImageButton) findViewById(R.id.imageButton3)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "尚未实现", Toast.LENGTH_SHORT).show();
+                mViewPager.setCurrentItem(2);
             }
         });
 
