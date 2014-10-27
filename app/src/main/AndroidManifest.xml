@@ -30,7 +30,10 @@
             android:name="com.cleanland.www.fjtmis.Act_CustDetail01"
             android:label="@string/title_activity_act__cust_detail01" >
         </activity>
-
+        <activity
+            android:name="com.cleanland.www.fjtmis.employee.Act_EmpDetail"
+            android:label="@string/title_activity_act__cust_detail01" >
+        </activity>
         <service android:name="com.cleanland.www.fjtmis.DaemonService" >
             <intent-filter>
                 <action android:name="com.cleanland.www.fjtmis.xxxxxxxxxx" />

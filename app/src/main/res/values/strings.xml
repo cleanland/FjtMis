@@ -10,6 +10,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_act__cust_detail01">Act_CustDetail01</string>
+    <string name="title_activity_act__emp_detail01">Act_EmpDetail</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="add_Cust">添加潜在客户</string>
     <string name="title_activity_add_cust">AddCustActivity</string>
