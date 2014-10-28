@@ -14,7 +14,7 @@ public class MyApplication extends Application {
     /**
      * 全局变量：软件要访问的域名
      */
-    private String SiteUrl;
+    private static String SiteUrl;
     private String dummy;
 
     public String getDummy() {
@@ -25,8 +25,8 @@ public class MyApplication extends Application {
         this.dummy = dummy;
     }
 
-    public String getSiteUrl() {
-        return this.SiteUrl;
+    public static String getSiteUrl() {
+        return SiteUrl;
     }
 
     /**

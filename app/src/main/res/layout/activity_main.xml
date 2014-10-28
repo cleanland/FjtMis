@@ -37,7 +37,7 @@
             android:text="意向客户"
             android:id="@+id/imageButton2"
             android:layout_weight=".25"
-            android:src="@android:drawable/ic_input_get"
+            android:src="@drawable/cust"
             android:background="@android:color/transparent"
             android:scaleType="centerInside"
             android:padding="10dp" />
@@ -63,6 +63,6 @@
             android:src="@drawable/home"
             android:scaleType="centerInside"
             android:background="@android:color/transparent"
-            android:padding="10dp" />
+            android:padding="12dp" />
     </LinearLayout>
 </LinearLayout>
