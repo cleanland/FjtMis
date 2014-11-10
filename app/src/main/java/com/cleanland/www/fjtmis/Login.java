@@ -30,9 +30,19 @@ public class Login extends SwipeBackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         //代码测试区
+        if(false){
+            new MyHttpJob("http://192.168.0.114/api/playlist.html?page=1", null) {
+                @Override
+                protected void OnDone(String ResponsedStr) {
+                    Log.i("", ""+ResponsedStr);
+                }
+            };
+            return;
+        }
+
+        setContentView(R.layout.activity_login);
 
         //从SharedPreferences获取数据+保存到全局变量:
         //从SharedPreferences获取数据+保存到全局变量:
